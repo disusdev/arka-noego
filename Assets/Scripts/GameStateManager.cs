@@ -74,6 +74,8 @@ public class GameStateManager : Singleton<GameStateManager>
       if (player.dead) continue;
       player.LateStep(dt);
     }
+
+    HUDSystem.Instance.Step(dt);
   }
 }
 

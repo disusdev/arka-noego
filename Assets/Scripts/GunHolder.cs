@@ -23,7 +23,7 @@ public class GunHolder : MonoBehaviour
     pos.z = is_fliped ? 0.1f : -0.1f;
     transform.localPosition = pos;
     add_rotation = (is_fliped ? 180.0f + 95.0f : 85.0f);
-    Weapon.Flip(is_fliped);
+    Weapon?.Flip(is_fliped);
   }
 }
 

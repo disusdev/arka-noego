@@ -84,10 +84,10 @@ public class PlayerManager : MonoBehaviour
     fireStr = string.Format("fire_{0}", playerId);
   }
 
-  public ThompsonGun thompson;
+  // public ThompsonGun thompson;
   private void Start()
   {
-    GunSystem.GiveGun(thompson.gameObject);
+    // GunSystem.GiveGun(thompson.gameObject);
   }
 
   private bool isFliped = false;
@@ -130,7 +130,7 @@ public class PlayerManager : MonoBehaviour
   {
     { // move player
       move_dir.x = input_state.h_move;
-      move_dir.y = input_state.v_move;
+      move_dir.y = input_state.v_move * 0.75f;
 
       bool zero = move_dir.x <= Mathf.Epsilon && move_dir.x >= -Mathf.Epsilon;
       Animator.SetBool("Move", !zero);

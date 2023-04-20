@@ -12,7 +12,14 @@ public abstract class Gun : MonoBehaviour
   public int Damage;
   protected bool fliped = false;
 
-  public abstract void Flip(bool is_fliped);
+  public void Flip(bool is_fliped)
+  {
+    fliped = is_fliped;
+    GunRenderer.flipX = is_fliped;
+    Vector2 pos = Muzzle.localPosition;
+    pos.x = fliped ? -Mathf.Abs(pos.x) : Mathf.Abs(pos.x);
+    Muzzle.localPosition = pos;  
+  }
   public abstract void Shoot();
   public abstract void RegularUpdate(float dt);
 }

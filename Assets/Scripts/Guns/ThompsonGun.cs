@@ -41,6 +41,7 @@ public class ThompsonGun : Gun
       if (pm != null && pm.gameObject.activeSelf)
       {
         pm.Damage(Damage);
+        HUDSystem.Instance.DrawIndicator(hit.point + Vector2.one * 0.2f, Damage.ToString());
       }
     }
 
@@ -52,15 +53,6 @@ public class ThompsonGun : Gun
 
     Line.SetPosition(0, position);
     Line.SetPosition(1, position + force.normalized * length);
-  }
-
-  public override void Flip(bool is_fliped)
-  {
-    fliped = is_fliped;
-    GunRenderer.flipX = is_fliped;
-    Vector2 pos = Muzzle.localPosition;
-    pos.x = fliped ? -Mathf.Abs(pos.x) : Mathf.Abs(pos.x);
-    Muzzle.localPosition = pos;
   }
 
   public override void Shoot()
