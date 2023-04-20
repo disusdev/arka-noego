@@ -99,14 +99,18 @@ public class PlayerManager : MonoBehaviour
   {
     GetInput(out input_state);
 
-    { // flip sprite
+    {
       look_dir.x = input_state.h_look;
       look_dir.y = input_state.v_look;
+    }
 
-      bool zero = look_dir.x <= Mathf.Epsilon && look_dir.x >= -Mathf.Epsilon;
+    { // flip sprite
+      float x = Pointer.GetX();
+
+      bool zero = x <= Mathf.Epsilon && x >= -Mathf.Epsilon;
       if (!zero)
-      { // TODO: set by pointer, to prevent early flip
-        isFliped = look_dir.x < 0;
+      {
+        isFliped = x < 0;
         SpriteRenderer.flipX = isFliped;
         GunSystem.Holder.Flip(isFliped);
       }

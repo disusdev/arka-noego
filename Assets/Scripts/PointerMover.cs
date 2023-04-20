@@ -19,6 +19,11 @@ public class PointerMover : MonoBehaviour
     pointer.localPosition = Vector3.up * offsetDistance;
   }
 
+  public float GetX()
+  {
+    return -Mathf.Sin(rotation * Mathf.Deg2Rad);
+  }
+
   public Quaternion GetRotation()
   {
     return target.localRotation;
