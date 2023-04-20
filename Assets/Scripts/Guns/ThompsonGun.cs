@@ -26,7 +26,7 @@ public class ThompsonGun : Gun
     float rnd = Mathf.PerlinNoise(position.x * Time.time * 2.0f, -position.y * Time.time * 2.0f) * 2.0f - 1.0f;
     rnd *= trauma * trauma * trauma;
 
-    rnd = Mathf.Clamp(rnd, -5.0f, 5.0f);
+    rnd = Mathf.Clamp(rnd, -3.0f, 3.0f);
     force = Quaternion.Euler(0.0f, 0.0f, rnd) * force;
 
     RaycastHit2D hit = Physics2D.Linecast(position, position + force, TargetMask);
@@ -35,6 +35,13 @@ public class ThompsonGun : Gun
     if (hit.collider != null)
     {
       length = hit.distance;
+
+      // TODO: just tests
+      PlayerManager pm = hit.collider.GetComponent<PlayerManager>();
+      if (pm != null && pm.gameObject.activeSelf)
+      {
+        pm.Damage(Damage);
+      }
     }
 
     Color col = Color.white;

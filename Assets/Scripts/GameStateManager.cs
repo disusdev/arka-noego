@@ -42,11 +42,17 @@ public class GameStateManager : Singleton<GameStateManager>
     players = FindObjectsOfType<PlayerManager>();
   }
 
+  public void UpdatePlayers()
+  {
+    players = FindObjectsOfType<PlayerManager>(false);
+  }
+
   private void Update()
   {
     float dt = Time.deltaTime;
     foreach(var player in players)
     {
+      if (player.dead) continue;
       player.Step(dt);  
     }
   }
@@ -55,6 +61,7 @@ public class GameStateManager : Singleton<GameStateManager>
   {
     foreach(var player in players)
     {
+      if (player.dead) continue;
       player.Simulate();  
     }
   }
@@ -64,6 +71,7 @@ public class GameStateManager : Singleton<GameStateManager>
     float dt = Time.deltaTime;
     foreach(var player in players)
     {
+      if (player.dead) continue;
       player.LateStep(dt);
     }
   }

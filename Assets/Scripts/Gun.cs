@@ -9,6 +9,7 @@ public abstract class Gun : MonoBehaviour
   public SpriteRenderer GunRenderer;
   public Transform Muzzle;
   public int Ammo;
+  public int Damage;
   protected bool fliped = false;
 
   public abstract void Flip(bool is_fliped);

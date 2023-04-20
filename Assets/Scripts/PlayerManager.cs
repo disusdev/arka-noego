@@ -37,6 +37,34 @@ public class PlayerManager : MonoBehaviour
   public Animator Animator;
   public SpriteRenderer SpriteRenderer;
 
+  // TODO: just for tests!
+  public int hp = 100;
+  public bool dead = false;
+  public void Damage(int dmg)
+  {
+    if (dead) return;
+
+    hp -= dmg;
+
+    if (hp == 0)
+    {
+      // dead
+      dead = true;
+      //Destroy(gameObject, 1.0f);
+      gameObject.SetActive(false);
+      //GameStateManager.Instance.UpdatePlayers();
+    }
+    else
+    if (hp < 0)
+    {
+      // ultra dead
+      dead = true;
+      //Destroy(gameObject, 1.0f);
+      gameObject.SetActive(false);
+      //GameStateManager.Instance.UpdatePlayers();
+    }
+  }
+
   public float MoveSpeed = 1.0f;
 
   private int playerId;
