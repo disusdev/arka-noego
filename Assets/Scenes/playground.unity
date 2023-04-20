@@ -210,6 +210,7 @@ GameObject:
   m_Component:
   - component: {fileID: 386148823}
   - component: {fileID: 386148824}
+  - component: {fileID: 386148825}
   m_Layer: 0
   m_Name: body
   m_TagString: Untagged
@@ -284,6 +285,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &386148825
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 386148822}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 575eaaf4269d0e440b94b18904ac8d10, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &452250613
 GameObject:
   m_ObjectHideFlags: 0
@@ -576,7 +597,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   body: {fileID: 386148823}
-  Height: 0.1
+  Height: 0.07
   Speed: 0.25
 --- !u!114 &617132681
 MonoBehaviour:
@@ -593,6 +614,7 @@ MonoBehaviour:
   Mover: {fileID: 617132680}
   Pointer: {fileID: 617132684}
   GunSystem: {fileID: 617132679}
+  Animator: {fileID: 386148825}
   SpriteRenderer: {fileID: 386148824}
   MoveSpeed: 7
   thompson: {fileID: 1672814378}

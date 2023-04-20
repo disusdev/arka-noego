@@ -13,7 +13,7 @@ public class CharacterMover : MonoBehaviour
   public float Height = 1.0f;
   public float Speed = 1.0f;
 
-  public void Move(Vector2 direction, float speed)
+  public float Move(Vector2 direction, float speed)
   {
     Rigidbody2D rb = GetComponent<Rigidbody2D>();
 
@@ -33,6 +33,8 @@ public class CharacterMover : MonoBehaviour
       pos.y = 0.35f;
       body.localPosition = pos;
     }
+
+    return length;
   }
 }
 

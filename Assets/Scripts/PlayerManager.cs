@@ -34,6 +34,7 @@ public class PlayerManager : MonoBehaviour
   public PointerMover Pointer;
   public GunSystem GunSystem;
 
+  public Animator Animator;
   public SpriteRenderer SpriteRenderer;
 
   public float MoveSpeed = 1.0f;
@@ -99,7 +100,11 @@ public class PlayerManager : MonoBehaviour
       move_dir.x = input_state.h_move;
       move_dir.y = input_state.v_move;
 
-      Mover.Move(move_dir, MoveSpeed);
+      bool zero = move_dir.x <= Mathf.Epsilon && move_dir.x >= -Mathf.Epsilon;
+      Animator.SetBool("Move", !zero);
+
+      float vel_speed = Mover.Move(move_dir, MoveSpeed);
+      Animator.SetFloat("Speed", vel_speed);
     }
   }
 
