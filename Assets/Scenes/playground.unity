@@ -487,17 +487,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f0d372f43d17bb448da3f5d2eec3a64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FireLength: 100
+  FireRate: 0.75
   GunRenderer: {fileID: 373355385}
   Muzzle: {fileID: 1395039253}
   Ammo: 5
   Damage: 5
-  FireRate: 0.75
-  FireLength: 100
+  Thrower: {fileID: 0}
   recoil: 0.25
   Line: {fileID: 1395039252}
   TargetMask:
     serializedVersion: 2
     m_Bits: 5120
+  DamageColor: {r: 1, g: 0, b: 0, a: 0}
+  AmmoColor: {r: 1, g: 0.73333335, b: 0, a: 0}
 --- !u!212 &373355385
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1777,21 +1780,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 912db452b5c9f334f887453626db08aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FireLength: 100
+  FireRate: 1
   GunRenderer: {fileID: 1102766944}
   Muzzle: {fileID: 1834051420}
-  Ammo: 21
+  Ammo: 20
   Damage: 10
+  Thrower: {fileID: 0}
   TargetMask:
     serializedVersion: 2
     m_Bits: 5120
-  FireLength: 100
-  FireRate: 1
   Lines:
   - {fileID: 1176967878}
   - {fileID: 844366814}
   - {fileID: 121110184}
   - {fileID: 1096771698}
   - {fileID: 1581598796}
+  DamageColor: {r: 1, g: 0, b: 0, a: 0}
+  AmmoColor: {r: 1, g: 0.73333335, b: 0, a: 0}
 --- !u!1 &1176967876
 GameObject:
   m_ObjectHideFlags: 0
@@ -3991,17 +3997,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f0d372f43d17bb448da3f5d2eec3a64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FireLength: 100
+  FireRate: 0.25
   GunRenderer: {fileID: 1672814379}
   Muzzle: {fileID: 915649733}
   Ammo: 21
   Damage: 20
-  FireRate: 0.25
-  FireLength: 100
+  Thrower: {fileID: 0}
   recoil: 0.75
   Line: {fileID: 915649734}
   TargetMask:
     serializedVersion: 2
     m_Bits: 5120
+  DamageColor: {r: 1, g: 0, b: 0, a: 0}
+  AmmoColor: {r: 1, g: 0.73324853, b: 0, a: 0}
 --- !u!212 &1672814379
 SpriteRenderer:
   m_ObjectHideFlags: 0

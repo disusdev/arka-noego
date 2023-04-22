@@ -22,7 +22,23 @@ public class GunSystem : MonoBehaviour
     Gun gun = collision.gameObject.GetComponent<Gun>();
     if (gun != null)
     {
-      GiveGun(gun.gameObject);
+      if (gun.Ammo <= 0)
+      { // check if not our gun
+        if (gun.Thrower != gameObject)
+        {
+          collision.gameObject.SetActive(false);
+          // give damage
+          PlayerManager pm = GetComponent<PlayerManager>();
+          int dmg = gun.Damage / 2;
+          pm.Damage(dmg);
+          HUDSystem.Instance.DrawIndicator((Vector2)transform.position + Vector2.one * 0.2f, dmg.ToString(), Color.red);
+        }
+        return;
+      }
+      else
+      {
+        GiveGun(gun.gameObject);
+      }
     }
   }
 
@@ -33,7 +49,12 @@ public class GunSystem : MonoBehaviour
 
   public void Shoot()
   {
-    Holder.Weapon?.Shoot();
+    if (Holder.Weapon && !Holder.Weapon.Shoot())
+    {
+      Holder.Weapon.Thrower = gameObject;
+      Destroy(Holder.Weapon.gameObject, 1.0f);
+      Holder.Weapon = null;
+    }
   }
 }
 

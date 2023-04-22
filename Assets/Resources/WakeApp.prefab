@@ -58,31 +58,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b0c3e988509f23428532aef04209ce5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DamageIndicators:
+  Indicators:
   - text: {fileID: 8604794251881756508}
     trans: {fileID: 6352751476248240643}
-    hide_speed: 2
-    color: {r: 1, g: 0, b: 0, a: 0}
+    hide_speed: 0.5
     avaliable: 1
   - text: {fileID: 4050085306239835831}
     trans: {fileID: 1691967698859861711}
-    hide_speed: 2
-    color: {r: 1, g: 0, b: 0, a: 0}
+    hide_speed: 0.5
     avaliable: 1
   - text: {fileID: 2503345802570137218}
     trans: {fileID: 7609978686384869005}
-    hide_speed: 2
-    color: {r: 1, g: 0, b: 0, a: 0}
+    hide_speed: 0.5
     avaliable: 1
   - text: {fileID: 4742056931149604474}
     trans: {fileID: 8784348807944576867}
-    hide_speed: 2
-    color: {r: 1, g: 0, b: 0, a: 0}
+    hide_speed: 0.5
     avaliable: 1
   - text: {fileID: 8158955318104025080}
     trans: {fileID: 1933154266143533615}
-    hide_speed: 2
-    color: {r: 1, g: 0, b: 0, a: 0}
+    hide_speed: 0.5
     avaliable: 1
 --- !u!1 &1000739925548188421
 GameObject:

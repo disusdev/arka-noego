@@ -6,22 +6,21 @@ namespace disusdev
 
 public class ThompsonGun : Gun
 {
-  public float FireRate;
-  public float FireLength;
-  float timer = 0.0f;
-
   public float recoil = 0.1f;
   float trauma = 0.0f;
 
   public LineRenderer Line;
   public LayerMask TargetMask;
 
+  public Color DamageColor;
+  public Color AmmoColor;
+
   private void Awake()
   {
     timer = FireRate;
   }
 
-  private void SpawnProjectile(Vector2 position, Vector2 force)
+  public override void SpawnProjectile(Vector2 position, Vector2 force)
   {
     float rnd = Mathf.PerlinNoise(position.x * Time.time * 2.0f, -position.y * Time.time * 2.0f) * 2.0f - 1.0f;
     rnd *= trauma * trauma * trauma;
@@ -41,7 +40,7 @@ public class ThompsonGun : Gun
       if (pm != null && pm.gameObject.activeSelf)
       {
         pm.Damage(Damage);
-        HUDSystem.Instance.DrawIndicator(hit.point + Vector2.one * 0.2f, Damage.ToString());
+        HUDSystem.Instance.DrawIndicator(hit.point + Vector2.one * 0.2f, Damage.ToString(), DamageColor);
       }
     }
 
@@ -53,16 +52,11 @@ public class ThompsonGun : Gun
 
     Line.SetPosition(0, position);
     Line.SetPosition(1, position + force.normalized * length);
-  }
 
-  public override void Shoot()
-  {
-    if (timer >= FireRate)
-    {
-      timer = 0.0f;
-      trauma += recoil;
-      SpawnProjectile(Muzzle.position, (fliped ? -Muzzle.right : Muzzle.right) * FireLength);
-    }
+    Ammo--;
+
+    if (Ammo <= 0) return;
+    HUDSystem.Instance.DrawGluedIndicator(transform, transform.right * 0.3f, Ammo.ToString(), AmmoColor);
   }
 
   public override void RegularUpdate(float dt)

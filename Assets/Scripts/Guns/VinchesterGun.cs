@@ -7,15 +7,25 @@ namespace disusdev
 public class VinchesterGun : Gun
 {
   public LayerMask TargetMask;
-  public float FireLength;
-  public float FireRate;
   public LineRenderer[] Lines;
+  private bool[] activated;
+  public Color DamageColor;
+  public Color AmmoColor;
 
-  private void SpawnProjectile(Vector2 position, Vector2 force)
+  private void Start()
+  {
+    activated = new bool[Lines.Length];
+  }
+
+  public override void SpawnProjectile(Vector2 position, Vector2 force)
   {
     int i = 0;
     foreach (var Line in Lines)
     {
+      activated[i] = Ammo > 0;
+
+      if (!activated[i]) continue;
+
       // float rnd = Mathf.PerlinNoise(position.x * Time.time * 2.0f + i, -position.y * Time.time * 2.0f - i) * 2.0f - 1.0f;
       float rnd = Random.Range(-6.0f, 6.0f);
 
@@ -33,7 +43,7 @@ public class VinchesterGun : Gun
         if (pm != null && pm.gameObject.activeSelf)
         {
           pm.Damage(Damage);
-          HUDSystem.Instance.DrawIndicator(hit.point + Vector2.one * 0.2f, Damage.ToString());
+          HUDSystem.Instance.DrawIndicator(hit.point + Vector2.one * 0.2f, Damage.ToString(), DamageColor);
         }
       }
       
@@ -45,10 +55,15 @@ public class VinchesterGun : Gun
       
       Line.SetPosition(0, position);
       Line.SetPosition(1, position + force.normalized * length);
+
+      Ammo--;
+      i++;
     }
+
+    if (Ammo <= 0) return;
+    HUDSystem.Instance.DrawGluedIndicator(transform, transform.right * 0.3f, Ammo.ToString(), AmmoColor);
   }
 
-  private float timer = 0.0f;
   public override void RegularUpdate(float dt)
   {
     timer += dt;
@@ -61,8 +76,10 @@ public class VinchesterGun : Gun
     Color col = Color.white;
     col.a = 1.0f - Mathf.InverseLerp(0.0f, FireRate, timer);
 
+    int i = 0;
     foreach (var Line in Lines)
     {
+      if (!activated[i]) continue;
       Color c = col;
       c.a -= Random.Range(0.0f, 0.2f);
       Line.endColor = c;
@@ -70,20 +87,14 @@ public class VinchesterGun : Gun
 
     col.a -= 0.75f;
 
+    i = 0;
     foreach (var Line in Lines)
     {
+      if (!activated[i]) continue;
       Color c = col;
       c.a -= Random.Range(0.0f, 0.2f);
       Line.startColor = c;
-    }
-  }
-
-  public override void Shoot()
-  {
-    if (timer >= FireRate)
-    {
-      timer = 0.0f;
-      SpawnProjectile(Muzzle.position, (fliped ? -Muzzle.right : Muzzle.right) * FireLength);
+      i++;
     }
   }
 }

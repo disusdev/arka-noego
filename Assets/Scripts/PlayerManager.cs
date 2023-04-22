@@ -104,18 +104,6 @@ public class PlayerManager : MonoBehaviour
       look_dir.y = input_state.v_look;
     }
 
-    { // flip sprite
-      float x = Pointer.GetX();
-
-      bool zero = x <= Mathf.Epsilon && x >= -Mathf.Epsilon;
-      if (!zero)
-      {
-        isFliped = x < 0;
-        SpriteRenderer.flipX = isFliped;
-        GunSystem.Holder.Flip(isFliped);
-      }
-    }
-
     { // update gun
       if (input_state.fire)
       {
@@ -148,6 +136,18 @@ public class PlayerManager : MonoBehaviour
       Pointer.LateStep(look_dir, dt);
     }
     GunSystem.Holder.Step();
+
+    { // flip sprite
+      float x = Pointer.GetX();
+
+      bool nzero = x <= Mathf.Epsilon && x >= -Mathf.Epsilon;
+      if (!nzero)
+      {
+        isFliped = x < 0;
+        SpriteRenderer.flipX = isFliped;
+        GunSystem.Holder.Flip(isFliped);
+      }
+    }
   }
 }
 
