@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{36f6eb2d-f79a-4748-adef-bfebe5af2e0b}">
+		<property name="assetPath">
+			<value>AngryPinguins195bpm.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>39.384625</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{bccf978d-d040-416d-b981-65d3b1da45fa}</destination>
+		</relationship>
+	</object>
+</objects>

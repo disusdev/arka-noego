@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{f91d3bfc-018f-4ecf-838f-fef62ba56c60}">
+		<property name="assetPath">
+			<value>KSHMR_Game_FX_10_Death.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>2.6608163265306124</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{bccf978d-d040-416d-b981-65d3b1da45fa}</destination>
+		</relationship>
+	</object>
+</objects>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{4912d99b-03e3-4fe5-82b7-e2b2993580a3}">
+		<property name="assetPath">
+			<value>FF_ESFXT_ambience_seaside_seagulls.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>49.285736961451249</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{bccf978d-d040-416d-b981-65d3b1da45fa}</destination>
+		</relationship>
+	</object>
+</objects>

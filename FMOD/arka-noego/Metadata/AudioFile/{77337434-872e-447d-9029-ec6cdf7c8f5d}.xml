@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{77337434-872e-447d-9029-ec6cdf7c8f5d}">
+		<property name="assetPath">
+			<value>Pinguin01_04.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.98131250000000003</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{bccf978d-d040-416d-b981-65d3b1da45fa}</destination>
+		</relationship>
+	</object>
+</objects>

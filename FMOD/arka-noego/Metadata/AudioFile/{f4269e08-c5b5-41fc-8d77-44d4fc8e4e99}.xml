@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{f4269e08-c5b5-41fc-8d77-44d4fc8e4e99}">
+		<property name="assetPath">
+			<value>KSHMR_Game_FX_37_You've_Been_Hit.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.66521541950113383</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{bccf978d-d040-416d-b981-65d3b1da45fa}</destination>
+		</relationship>
+	</object>
+</objects>
