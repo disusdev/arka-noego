@@ -7,12 +7,6 @@ namespace disusdev
 
 public class GameStateManager : Singleton<GameStateManager>
 {
-  private void Awake()
-  {
-    SceneManager.sceneUnloaded += OnSceneUnloaded;
-    SceneManager.sceneLoaded += OnSceneLoaded;
-  }
-
   private void OnSceneLoaded(Scene current, LoadSceneMode mode)
   {
     //string[] names = Input.GetJoystickNames();
@@ -36,9 +30,26 @@ public class GameStateManager : Singleton<GameStateManager>
     SceneManager.LoadScene(build_index);
   }
 
+  public void TimeOut()
+  {
+    // show game end UI,
+    // disable gameplay input
+    // time out looser
+    Debug.LogError("Game End!");
+  }
+
+  public void StartGame()
+  {
+    HUDSystem.Instance.StartTimer(60.0f, delegate {
+    TimeOut(); });
+  }
+
   private PlayerManager[] players;
   private void Start()
   {
+    SceneManager.sceneUnloaded += OnSceneUnloaded;
+    SceneManager.sceneLoaded += OnSceneLoaded;
+
     players = FindObjectsOfType<PlayerManager>();
   }
 

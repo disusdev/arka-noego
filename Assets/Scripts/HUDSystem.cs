@@ -1,6 +1,8 @@
 
+using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace disusdev
 {
@@ -12,6 +14,41 @@ public class HUDSystem : Singleton<HUDSystem>
   {
     Damage,
     Ammo
+  }
+
+  [System.Serializable]
+  public struct TextTimer
+  {
+    public GameObject Object;
+    public TMP_Text Text;
+    private float timer;
+
+    public UnityEvent OnTimerEnd;
+
+    private bool active;
+
+    public void Start(float time)
+    {
+      Object.SetActive(true);
+      timer = time;
+      Text.text = timer.ToString("0");
+      active = true;
+    }
+
+    public void Step(float dt)
+    {
+      if (!active) return;
+
+      timer -= dt;
+      if (timer < 0)
+      {
+        timer = 0.0f;
+        active = false;
+        Object.SetActive(false);
+        OnTimerEnd.Invoke();
+      }
+      Text.text = timer.ToString("0");
+    }
   }
 
   [System.Serializable]
@@ -145,11 +182,30 @@ public class HUDSystem : Singleton<HUDSystem>
     }
   }
 
+  public TextTimer Timer;
+
+  public void StartTimer(float time, UnityAction on_end)
+  {
+    Timer.OnTimerEnd.RemoveAllListeners();
+    Timer.OnTimerEnd.AddListener(on_end);
+    Timer.Start(time);
+  }
+
+  public GameObject PlayeButton;
+
   public void Step(float dt)
   {
     for (int i = 0; i < Indicators.Length; i++)
     {
       Indicators[i].Update(dt);
+    }
+
+    Timer.Step(dt);
+
+    if (Input.GetButtonDown("Submit") && PlayeButton.activeSelf == true)
+    {
+      PlayeButton.SetActive(false);
+      GameStateManager.Instance.StartGame();
     }
   }
 }

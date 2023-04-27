@@ -118,6 +118,13 @@ MonoBehaviour:
     trans: {fileID: 1933154266143533615}
     hide_speed: 0.5
     avaliable: 1
+  Timer:
+    Object: {fileID: 5907520623345825880}
+    Text: {fileID: 8849653629762679156}
+    OnTimerEnd:
+      m_PersistentCalls:
+        m_Calls: []
+  PlayeButton: {fileID: 3447243793872339196}
 --- !u!1 &351382365674525802
 GameObject:
   m_ObjectHideFlags: 0
@@ -1708,7 +1715,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2930577974891943831
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1812,7 +1819,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7376100866629941211}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 175556601077991823}
+        m_TargetAssemblyTypeName: disusdev.GameStateManager, Assembly-CSharp
+        m_MethodName: StartGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 3447243793872339196}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3629584892426354068
 GameObject:
   m_ObjectHideFlags: 0
