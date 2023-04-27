@@ -9,8 +9,6 @@ public class VinchesterGun : Gun
   public LayerMask TargetMask;
   public LineRenderer[] Lines;
   private bool[] activated;
-  public Color DamageColor;
-  public Color AmmoColor;
 
   private void Start()
   {
@@ -43,7 +41,7 @@ public class VinchesterGun : Gun
         if (pm != null && pm.gameObject.activeSelf)
         {
           pm.Damage(Damage);
-          HUDSystem.Instance.DrawIndicator(hit.point + Vector2.one * 0.2f, Damage.ToString(), DamageColor);
+          HUDSystem.Instance.DrawIndicator(hit.point + Vector2.one * 0.2f, Damage.ToString(), HUDSystem.IndicatorType.Damage);
         }
       }
       
@@ -61,7 +59,7 @@ public class VinchesterGun : Gun
     }
 
     if (Ammo <= 0) return;
-    HUDSystem.Instance.DrawGluedIndicator(transform, transform.right * 0.3f, Ammo.ToString(), AmmoColor);
+    HUDSystem.Instance.DrawGluedIndicator(transform, transform.right * 0.3f, Ammo.ToString(), HUDSystem.IndicatorType.Ammo);
   }
 
   public override void RegularUpdate(float dt)

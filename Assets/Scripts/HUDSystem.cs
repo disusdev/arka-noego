@@ -8,6 +8,12 @@ namespace disusdev
 public class HUDSystem : Singleton<HUDSystem>
 {
 
+  public enum IndicatorType
+  {
+    Damage,
+    Ammo
+  }
+
   [System.Serializable]
   public struct TextIndicator
   {
@@ -98,6 +104,42 @@ public class HUDSystem : Singleton<HUDSystem>
       if (Indicators[i].avaliable)
       {
         Indicators[i].PlayGlued(parrent, offset, value, color);
+        return;
+      }
+    }
+  }
+
+  private Color TypeToColor(IndicatorType type)
+  {
+    switch (type)
+    {
+      case IndicatorType.Damage:
+      return Color.red;
+      case IndicatorType.Ammo:
+      return Color.yellow;
+    }
+    return Color.white;
+  }
+
+  public void DrawIndicator(Vector2 position, string value, IndicatorType type)
+  {
+    for (int i = 0; i < Indicators.Length; i++)
+    {
+      if (Indicators[i].avaliable)
+      {
+        Indicators[i].Play(position, value, TypeToColor(type));
+        return;
+      }
+    }
+  }
+
+  public void DrawGluedIndicator(Transform parrent, Vector2 offset, string value, IndicatorType type)
+  {
+    for (int i = 0; i < Indicators.Length; i++)
+    {
+      if (Indicators[i].avaliable)
+      {
+        Indicators[i].PlayGlued(parrent, offset, value, TypeToColor(type));
         return;
       }
     }

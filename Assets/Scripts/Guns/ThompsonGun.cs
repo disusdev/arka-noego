@@ -12,14 +12,6 @@ public class ThompsonGun : Gun
   public LineRenderer Line;
   public LayerMask TargetMask;
 
-  public Color DamageColor;
-  public Color AmmoColor;
-
-  private void Awake()
-  {
-    timer = FireRate;
-  }
-
   public override void SpawnProjectile(Vector2 position, Vector2 force)
   {
     float rnd = Mathf.PerlinNoise(position.x * Time.time * 2.0f, -position.y * Time.time * 2.0f) * 2.0f - 1.0f;
@@ -40,7 +32,7 @@ public class ThompsonGun : Gun
       if (pm != null && pm.gameObject.activeSelf)
       {
         pm.Damage(Damage);
-        HUDSystem.Instance.DrawIndicator(hit.point + Vector2.one * 0.2f, Damage.ToString(), DamageColor);
+        HUDSystem.Instance.DrawIndicator(hit.point + Vector2.one * 0.2f, Damage.ToString(), HUDSystem.IndicatorType.Damage);
       }
     }
 
@@ -56,7 +48,7 @@ public class ThompsonGun : Gun
     Ammo--;
 
     if (Ammo <= 0) return;
-    HUDSystem.Instance.DrawGluedIndicator(transform, transform.right * 0.3f, Ammo.ToString(), AmmoColor);
+    HUDSystem.Instance.DrawGluedIndicator(transform, transform.right * 0.3f, Ammo.ToString(), HUDSystem.IndicatorType.Ammo);
   }
 
   public override void RegularUpdate(float dt)

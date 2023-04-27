@@ -16,6 +16,17 @@ public abstract class Gun : MonoBehaviour
   protected float timer = 0.0f;
   public GameObject Thrower;
 
+  private void Awake()
+  {
+    timer = FireRate;
+  }
+
+  protected GameObject owner;
+  public void SetOwner(GameObject owner)
+  {
+    this.owner = owner;
+  }
+
   public void Flip(bool is_fliped)
   {
     fliped = is_fliped;
@@ -26,7 +37,7 @@ public abstract class Gun : MonoBehaviour
   }
   public abstract void SpawnProjectile(Vector2 position, Vector2 force);
 
-  public bool Shoot()
+  public virtual bool Shoot()
   {
     if (timer >= FireRate)
     {

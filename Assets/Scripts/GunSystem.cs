@@ -15,6 +15,7 @@ public class GunSystem : MonoBehaviour
     gun.transform.localPosition = Vector3.zero;
     Holder.Weapon = gun.GetComponent<Gun>();
     Destroy(gun.GetComponent<CircleCollider2D>());
+    Holder.Weapon.SetOwner(gameObject);
   }
 
   private void OnTriggerEnter2D(Collider2D collision)
