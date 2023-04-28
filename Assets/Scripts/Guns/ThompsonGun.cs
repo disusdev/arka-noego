@@ -47,6 +47,8 @@ public class ThompsonGun : Gun
 
     Ammo--;
 
+    SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Gun_1);
+
     if (Ammo <= 0) return;
     HUDSystem.Instance.DrawGluedIndicator(transform, transform.right * 0.3f, Ammo.ToString(), HUDSystem.IndicatorType.Ammo);
   }

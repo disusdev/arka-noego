@@ -32,6 +32,7 @@ public class FlameThrowerGun : Gun
     sh.rotation = new Vector3(0.0f, 0.0f, (fliped ? 90.0f : -90.0f));
 
     FlameParticle.Emit(5);
+    Ammo -= 5;
   }
 }
 

@@ -55,6 +55,7 @@ public class GunSystem : MonoBehaviour
       Holder.Weapon.Thrower = gameObject;
       Destroy(Holder.Weapon.gameObject, 1.0f);
       Holder.Weapon = null;
+      GunSpawner.Instance.FreeOne();
     }
   }
 }

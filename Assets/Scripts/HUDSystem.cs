@@ -17,6 +17,60 @@ public class HUDSystem : Singleton<HUDSystem>
   }
 
   [System.Serializable]
+  public struct ParinModule
+  {
+    public GameObject Object;
+    public GameObject[] PanelsButtons;
+    public GameObject[] PanelsApproved;
+    public string[] l_buttons;
+    public string[] r_buttons;
+
+    public void Activate()
+    {
+      for (int i = 0; i < PanelsButtons.Length; i++)
+      {
+        PanelsButtons[i].SetActive(true);
+        PanelsApproved[i].SetActive(false);
+      }
+      Object.SetActive(true);
+    }
+
+    public int Step()
+    {
+      if (!Object.activeSelf) return 0;
+      int approved_count = 0;
+      for (int i = 0; i < PanelsButtons.Length; i++)
+      {
+        if (PanelsApproved[i].activeSelf)
+        {
+          approved_count++;
+          continue;
+        }
+
+        if (Input.GetButton(l_buttons[i]) && Input.GetButton(r_buttons[i]))
+        {
+          SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Pinguin_1);
+          PanelsButtons[i].SetActive(false);
+          PanelsApproved[i].SetActive(true);
+        }
+      }
+
+      if (Input.GetButtonDown("bypass"))
+      {
+        SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Point);
+        return 4;
+      }
+
+      return approved_count;
+    }
+
+    public void Hide()
+    {
+      Object.SetActive(false);
+    }
+  }
+
+  [System.Serializable]
   public struct TextTimer
   {
     public GameObject Object;
@@ -33,6 +87,14 @@ public class HUDSystem : Singleton<HUDSystem>
       timer = time;
       Text.text = timer.ToString("0");
       active = true;
+    }
+
+    public void Stop()
+    {
+      Object.SetActive(false);
+      timer = 0.0f;
+      Text.text = timer.ToString("0");
+      active = false;
     }
 
     public void Step(float dt)
@@ -191,7 +253,17 @@ public class HUDSystem : Singleton<HUDSystem>
     Timer.Start(time);
   }
 
-  public GameObject PlayeButton;
+  public void ActiveWinnerPanel(string player_name)
+  {
+    WinnerPanel.SetActive(true);
+    WinnerPlayerText.text = player_name;
+  }
+
+  public GameObject PlayButton;
+  public GameObject WinnerPanel;
+  public TMP_Text WinnerPlayerText;
+
+  public ParinModule Pair;
 
   public void Step(float dt)
   {
@@ -202,12 +274,47 @@ public class HUDSystem : Singleton<HUDSystem>
 
     Timer.Step(dt);
 
-    if (Input.GetButtonDown("Submit") && PlayeButton.activeSelf == true)
+    if (Pair.Step() == 4)
     {
-      PlayeButton.SetActive(false);
+      SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Pinguin_2);
+      Pair.Hide();
+      PlayButton.SetActive(true);
+    }
+
+    if (Input.GetButtonDown("Submit") && PlayButton.activeSelf == true)
+    {
+      SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Point);
+      PlayButton.SetActive(false);
       GameStateManager.Instance.StartGame();
     }
+
+    if (Input.GetButtonDown("Submit") && WinnerPanel.activeSelf == true)
+    {
+      SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Pinguin_1);
+      WinnerPanel.SetActive(false);
+      // PlayButton.SetActive(true);
+      Pair.Activate();
+      GameStateManager.Instance.LoadScene(0);
+    }
   }
+
+  //private void OnGUI()
+  //{
+  //  bool l0 = Input.GetButton(Pair.l_buttons[0]);
+  //  bool r0 = Input.GetButton(Pair.r_buttons[0]);
+
+  //  bool l1 = Input.GetButton(Pair.l_buttons[1]);
+  //  bool r1 = Input.GetButton(Pair.r_buttons[1]);
+
+  //  bool l2 = Input.GetButton(Pair.l_buttons[2]);
+  //  bool r2 = Input.GetButton(Pair.r_buttons[2]);
+
+  //  bool l3 = Input.GetButton(Pair.l_buttons[3]);
+  //  bool r3 = Input.GetButton(Pair.r_buttons[3]);
+
+  //  string log = string.Format("l0: {0}\nr0: {1}\nl1: {2}\nr1: {3}\nl2: {4}\nr2: {5}\nl3: {6}\nr3: {7}\n", l0, r0, l1, r1, l2, r2, l3, r3);
+  //  GUI.TextArea(new Rect(0.0f, 0.0f, 200.0f, 400.0f), log);
+  //}
 }
 
 }

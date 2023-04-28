@@ -6,7 +6,7 @@ namespace disusdev
 
 public class PlayerManager : MonoBehaviour
 {
-  static int ID;
+  public static int ID;
 
   public struct InputState
   {
@@ -46,11 +46,16 @@ public class PlayerManager : MonoBehaviour
 
     hp -= dmg;
 
+    CameraShaker.Instance.AddDuration(dmg * 0.02f);
+
     if (hp == 0)
     {
       // dead
       dead = true;
       //Destroy(gameObject, 1.0f);
+
+      SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Death);
+
       gameObject.SetActive(false);
       //GameStateManager.Instance.UpdatePlayers();
     }
@@ -60,6 +65,9 @@ public class PlayerManager : MonoBehaviour
       // ultra dead
       dead = true;
       //Destroy(gameObject, 1.0f);
+
+      SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Death);
+
       gameObject.SetActive(false);
       //GameStateManager.Instance.UpdatePlayers();
     }
@@ -67,7 +75,7 @@ public class PlayerManager : MonoBehaviour
 
   public float MoveSpeed = 1.0f;
 
-  private int playerId;
+  public int playerId;
   private string hMoveStr;
   private string vMoveStr;
   private string hLookStr;

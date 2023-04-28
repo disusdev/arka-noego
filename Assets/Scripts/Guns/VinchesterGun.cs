@@ -58,6 +58,8 @@ public class VinchesterGun : Gun
       i++;
     }
 
+    SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Gun_2);
+
     if (Ammo <= 0) return;
     HUDSystem.Instance.DrawGluedIndicator(transform, transform.right * 0.3f, Ammo.ToString(), HUDSystem.IndicatorType.Ammo);
   }

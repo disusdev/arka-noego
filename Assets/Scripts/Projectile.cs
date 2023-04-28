@@ -11,6 +11,7 @@ public class Projectile : MonoBehaviour
   public float Aimbot;
 
   public Rigidbody2D rb;
+  public ParticleSystem ps;
 
   public LayerMask TargetMask;
   private Collider2D[] colliders = new Collider2D[4];
@@ -35,7 +36,12 @@ public class Projectile : MonoBehaviour
       pm.Damage(damage);
       HUDSystem.Instance.DrawIndicator((Vector2)pm.transform.position + (Vector2.one * 0.2f), damage.ToString(), HUDSystem.IndicatorType.Damage);
     }
-    Destroy(gameObject);
+
+    ps.Play();
+    Destroy(gameObject, 1.0f);
+    GetComponent<SpriteRenderer>().enabled = false;
+    GetComponent<Collider2D>().enabled = false;
+    this.enabled = false;
   }
 }
 
