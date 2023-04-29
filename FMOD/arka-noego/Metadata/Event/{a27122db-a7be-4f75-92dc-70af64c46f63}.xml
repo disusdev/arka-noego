@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{a27122db-a7be-4f75-92dc-70af64c46f63}">
 		<property name="name">
-			<value>PointForThePlayer</value>
+			<value>Click</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
@@ -80,6 +80,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{a6a8d454-1e2a-4293-b2c1-604149076c82}">
+		<property name="volume">
+			<value>-9</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{f13b728d-ad37-4de3-8dcd-38a224873090}</destination>
 		</relationship>
