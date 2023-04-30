@@ -117,6 +117,8 @@ public class PlayerManager : MonoBehaviour
     {
       RumbleSystem.Instance.Play(playerId, dmg / 100.0f, 0.2f);
       HUDSystem.Instance.DrawGluedBarIndicator(playerId, transform, transform.up * 1.0f, hp);
+
+      SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Damage);
     }
 
     CameraShaker.Instance.AddDuration(dmg * 0.02f);
@@ -168,7 +170,10 @@ public class PlayerManager : MonoBehaviour
   private InputState input_state;
   public void Step(float dt)
   {
-    GetInput(out input_state);
+    if (pad.enabled)
+    {
+      GetInput(out input_state);
+    }
 
     {
       look_dir.x = input_state.h_look;

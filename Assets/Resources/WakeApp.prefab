@@ -477,17 +477,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Sounds:
   - Guid:
+      Data1: -960745583
+      Data2: 1191560604
+      Data3: 1954238618
+      Data4: 38102854
+    Path: event:/SFX/Player_Damage
+  - Guid:
       Data1: 1966796067
       Data2: 1249578823
       Data3: 565781924
       Data4: 59315416
-    Path: event:/SFX/Gun_01
+    Path: event:/SFX/Pistolet
   - Guid:
-      Data1: 26602775
-      Data2: 1206342655
-      Data3: 2132508309
-      Data4: 1619152903
-    Path: event:/SFX/Gun_02
+      Data1: 170165688
+      Data2: 1298984392
+      Data3: -413231446
+      Data4: -346178295
+    Path: event:/SFX/Shotgun
+  - Guid:
+      Data1: -557130638
+      Data2: 1148796077
+      Data3: 826369720
+      Data4: 177798420
+    Path: event:/SFX/Flames_Thrower
+  - Guid:
+      Data1: -1543686019
+      Data2: 1169871215
+      Data3: -890049091
+      Data4: 832381751
+    Path: event:/SFX/Rocket_Shot
+  - Guid:
+      Data1: 1241822927
+      Data2: 1320436570
+      Data3: 998961054
+      Data4: 1759327139
+    Path: event:/SFX/Rocket_Blow
   - Guid:
       Data1: -1408626610
       Data2: 1136754509
@@ -499,25 +523,20 @@ MonoBehaviour:
       Data2: 1275792022
       Data3: 1126343316
       Data4: -691712533
-    Path: event:/SFX/Pinguin_01
-  - Guid:
-      Data1: -1284737917
-      Data2: 1255207347
-      Data3: 1656296865
-      Data4: 1220953102
-    Path: event:/SFX/Pinguin_02
+    Path: event:/SFX/Character_Select
   - Guid:
       Data1: -1569643813
       Data2: 1333110718
       Data3: -1351557998
       Data4: 1668269156
-    Path: event:/SFX/PointForThePlayer
-  - Guid:
-      Data1: 481032496
-      Data2: 1117919665
-      Data3: 2101497275
-      Data4: -1971991971
-    Path: event:/SFX/UI_Click
+    Path: event:/SFX/Click
+  Music:
+    Guid:
+      Data1: 1609927757
+      Data2: 1296019273
+      Data3: 591291552
+      Data4: 863117081
+    Path: event:/Music
 --- !u!114 &8052452253493401422
 MonoBehaviour:
   m_ObjectHideFlags: 0

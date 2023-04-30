@@ -51,7 +51,7 @@ public class HUDSystem : Singleton<HUDSystem>
         if (Gamepad.all[i].leftShoulder.isPressed &&
             Gamepad.all[i].rightShoulder.isPressed)
         {
-          SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Pinguin_1);
+          SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Select);
           PanelsButtons[i].SetActive(false);
           PanelsApproved[i].SetActive(true);
         }
@@ -367,7 +367,7 @@ public class HUDSystem : Singleton<HUDSystem>
 
     if ((paired_players == 4) || bypass)
     {
-      SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Point);
+      SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Click);
       Pair.Hide();
       PlayButton.SetActive(true);
 
@@ -376,14 +376,14 @@ public class HUDSystem : Singleton<HUDSystem>
 
     if (Input.GetButtonDown("Submit") && PlayButton.activeSelf == true)
     {
-      SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Point);
+      SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Click);
       PlayButton.SetActive(false);
       GameStateManager.Instance.StartGame();
     }
 
     if (Input.GetButtonDown("Submit") && WinnerPanel.activeSelf == true)
     {
-      SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Pinguin_1);
+      SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Select);
       WinnerPanel.SetActive(false);
       // PlayButton.SetActive(true);
       Pair.Activate();

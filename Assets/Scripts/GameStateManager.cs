@@ -11,6 +11,7 @@ public class GameStateManager : Singleton<GameStateManager>
   {
     UpdatePlayers();
     HUDSystem.Instance.Pair.Activate();
+    SfxPlayer.Instance.ChangeMusic("Gameplay");
   }
 
   private void OnSceneUnloaded(Scene current)
@@ -36,9 +37,9 @@ public class GameStateManager : Singleton<GameStateManager>
 
     HUDSystem.Instance.ActiveWinnerPanel("None");
 
-    inGame = false;
+    SfxPlayer.Instance.ChangeMusic("Menu");
 
-    SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Death);
+    inGame = false;
 
     // TODO: kill all
     for (int i = 0; i < players.Length; i++)
@@ -63,7 +64,7 @@ public class GameStateManager : Singleton<GameStateManager>
 
     inGame = false;
 
-    SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Death);
+    SfxPlayer.Instance.ChangeMusic("Menu");
   }
 
   bool playground_mode = false;

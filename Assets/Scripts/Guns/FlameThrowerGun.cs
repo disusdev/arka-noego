@@ -33,6 +33,8 @@ public class FlameThrowerGun : Gun
 
     FlameParticle.Emit(5);
     Ammo -= 5;
+
+    SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Flame);
   }
 }
 

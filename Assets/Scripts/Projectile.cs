@@ -28,6 +28,8 @@ public class Projectile : MonoBehaviour
 
   private void OnCollisionEnter2D(Collision2D collision)
   {
+    SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.RocketBlow);
+
     int collision_count = Physics2D.OverlapCircleNonAlloc(collision.contacts[0].point, Radius, colliders, TargetMask);
     for (int i = 0; i < collision_count; i++)
     {
