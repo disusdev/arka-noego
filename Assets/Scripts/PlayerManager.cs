@@ -115,7 +115,9 @@ public class PlayerManager : MonoBehaviour
 
     if (hp > 0.0f)
     {
-      RumbleSystem.Instance.Play(playerId, dmg / 100.0f, 0.2f);
+      if (!disconnected)
+        RumbleSystem.Instance.Play(playerId, dmg / 100.0f, 0.2f);
+
       HUDSystem.Instance.DrawGluedBarIndicator(playerId, transform, transform.up * 1.0f, hp);
 
       SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Damage);
@@ -129,7 +131,11 @@ public class PlayerManager : MonoBehaviour
 
       SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Death);
 
-      RumbleSystem.Instance.Play(playerId, 0.5f, 1.0f);
+      HUDSystem.Instance.DrawGluedBarIndicator(playerId, transform, transform.up * 1.0f, 0);
+
+      if (!disconnected)
+        RumbleSystem.Instance.Play(playerId, 0.5f, 1.0f);
+
       gameObject.SetActive(false);
     }
     else
@@ -139,21 +145,48 @@ public class PlayerManager : MonoBehaviour
 
       SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Death);
 
-      RumbleSystem.Instance.Play(playerId, 0.7f, 1.0f);
+      HUDSystem.Instance.DrawGluedBarIndicator(playerId, transform, transform.up * 1.0f, 0);
+
+      if (!disconnected)
+        RumbleSystem.Instance.Play(playerId, 0.7f, 1.0f);
+
       gameObject.SetActive(false);
     }
   }
 
   public float MoveSpeed = 1.0f;
 
+  private void InputSystem_onDeviceChange(InputDevice device, InputDeviceChange change)
+  {
+    if (change == InputDeviceChange.Disconnected && device.deviceId == padId)
+    {
+      disconnected = true;
+    }
+    else
+    if (disconnected && change == InputDeviceChange.Reconnected)
+    {
+      Gamepad pade = (Gamepad)device;
+      if (pade != null)
+      {
+        padId = pade.deviceId;
+        disconnected = false;
+        pad = pade;
+      }
+    }
+  }
+
   public int playerId;
   private Gamepad pad;
+  private int padId;
+  private bool disconnected = false;
   public void Init(bool is_active)
   {
     if (is_active)
     {
       playerId = ID++;
       pad = Gamepad.all[playerId];
+      padId = pad.deviceId;
+      InputSystem.onDeviceChange += InputSystem_onDeviceChange;
 
       gameObject.SetActive(true);
     }
@@ -170,7 +203,7 @@ public class PlayerManager : MonoBehaviour
   private InputState input_state;
   public void Step(float dt)
   {
-    if (pad.enabled)
+    if (!disconnected)
     {
       GetInput(out input_state);
     }
