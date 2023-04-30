@@ -1,14 +1,13 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace disusdev
 {
 
-public class GunSpawner : MonoBehaviour
+public class GunSpawner : Singleton<GunSpawner>
 {
-  public static GunSpawner Instance;
-
   [System.Serializable]
   public struct SpawnData
   {
@@ -16,57 +15,102 @@ public class GunSpawner : MonoBehaviour
     public float probability;
   }
 
-  public Transform[] SpawnPoints;
+  public Tilemap groundMap;
   public SpawnData[] SpawnsData;
-  public bool[] GunInUse;
+  public int MaxGunsInGame = 5;
 
-  public List<int> NotUsedIndices = new List<int>();
+  private int spawnedGuns = 0;
+
+  private List<int> occupiedSpawns = new List<int>();
+
+  public void OnGunPicked(int spawn_index)
+  {
+    spawnedGuns--;
+    occupiedSpawns.RemoveAll(si => si == spawn_index);
+  }
 
   private void SpawnGun()
   {
-    NotUsedIndices.Clear();
+    if (spawnedGuns >= MaxGunsInGame) return;
 
-    for (int i = 0; i < GunInUse.Length; i++)
+    float probability = Random.value;
+    int spawn_index = Random.Range(0, SpawnPositions.Length);
+
+    List<int> can_spawn = new List<int>();
+
+    for (int i = 0; i < SpawnsData.Length; i++)
     {
-      if (!GunInUse[i])
+      if (probability > (1.0f - SpawnsData[i].probability))
       {
-        NotUsedIndices.Add(i);
+        can_spawn.Add(i);
       }
     }
 
-    if (NotUsedIndices.Count == 0) return;
-    
-    int rnd = Random.Range(0, NotUsedIndices.Count);
+    int gun_index = 0;
+    if (can_spawn.Count > 0)
+    {
+      gun_index = can_spawn[Random.Range(0, can_spawn.Count)];
+    }
 
-    int srnd = Random.Range(0, SpawnPoints.Length);
+    Vector3 pos = SpawnPositions[spawn_index];
+    pos.z = -1.0f;
 
-    Instantiate(SpawnsData[NotUsedIndices[rnd]].gun, SpawnPoints[srnd].position, Quaternion.identity);
+    Gun gun = Instantiate(SpawnsData[gun_index].gun, pos, Quaternion.identity).GetComponent<Gun>();
+    gun.spawn_point = spawn_index;
+    gun.onPick += OnGunPicked;
 
-    GunInUse[NotUsedIndices[rnd]] = true;
+    occupiedSpawns.Add(spawn_index);
+
+    spawnedGuns++;
 
     InitialTimeToSpawn -= 0.1f;
   }
 
-  public void FreeOne()
-  {
-    for (int i = 0; i < GunInUse.Length; i++)
-    {
-      if (GunInUse[i])
-      {
-        GunInUse[i] = false;
-        return;
-      }
-    }
-  }
-
-  private void Awake()
-  {
-    Instance = this;
-  }
+  private Vector2[] SpawnPositions;
 
   private void Start()
   {
     timer = InitialTimeToSpawn;
+
+    BoundsInt bounds = groundMap.cellBounds;
+    TileBase[] allTiles = groundMap.GetTilesBlock(bounds);
+
+    Vector2Int[] directions =
+    {
+      new Vector2Int(1, 0)
+    };
+
+    List<Vector2> spawn_list = new List<Vector2>();
+
+    for (int y = 0; y < bounds.size.y; y++)
+    {
+      for (int x = 0; x < bounds.size.x; x++)
+      {
+        TileBase tile = allTiles[x + y * bounds.size.x];
+
+        if (tile != null)
+        {
+            foreach (var dir in directions)
+            {
+              int xx = x + dir.x;
+              int yy = y + dir.y;
+              TileBase t = allTiles[x + y * bounds.size.x];
+              if (t == null) goto cant_place;
+            }
+        }
+        else
+        {
+            goto cant_place;
+        }
+
+        Vector2 place_pos = new Vector2(bounds.xMin + x, bounds.yMin + y + 0.5f);
+        spawn_list.Add(place_pos); x++;
+
+        cant_place: continue;
+      }
+    }
+
+    SpawnPositions = spawn_list.ToArray();
   }
 
   public float InitialTimeToSpawn = 1.0f;

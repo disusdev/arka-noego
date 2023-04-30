@@ -170,7 +170,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 2
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -4939,8 +4939,9 @@ MonoBehaviour:
   GunRenderer: {fileID: 8584931511634162550}
   Muzzle: {fileID: 8584931511552234667}
   Ammo: 50
-  Damage: 2
+  Damage: 5
   Thrower: {fileID: 0}
+  spawn_point: 0
   FlameParticle: {fileID: 8584931511552234665}
   FlameCollision: {fileID: 8584931511552234664}
 --- !u!58 &8584931511634162544

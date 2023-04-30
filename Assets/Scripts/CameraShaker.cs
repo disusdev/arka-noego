@@ -14,6 +14,8 @@ public class CameraShaker : MonoBehaviour
 	public float shakeAmount = 0.7f;
 	public float decreaseFactor = 1.0f;
 
+	public float MaxCameraShake = 1.0f;
+
 	Vector3 originalPos;
 
 	void Awake()
@@ -41,6 +43,8 @@ public class CameraShaker : MonoBehaviour
 		if (shakeDuration > 0)
 		{
 			float trauma = shakeDuration * shakeDuration * shakeAmount;
+
+			trauma = Mathf.Clamp(trauma, 0.0f, MaxCameraShake);
 
 			camTransform.localPosition = originalPos + Random.insideUnitSphere * trauma;
 			

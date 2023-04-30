@@ -1,5 +1,8 @@
 
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 namespace disusdev
 {
@@ -7,6 +10,47 @@ namespace disusdev
 public class PlayerManager : MonoBehaviour
 {
   public static int ID;
+
+  public enum ModifierType
+  {
+    Fire  
+  }
+
+  public class Modifier
+  {
+    public UnityAction StepAction;
+    public int Count;
+    public float Rate;
+    public ModifierType Type;
+
+    public Modifier(int count,
+                    float rate,
+                    ModifierType type,
+                    UnityAction stepAction)
+    {
+      StepAction = stepAction;
+      Count = count;
+      Rate = rate;
+      Type = type;
+      timer = Rate;
+    }
+
+    private float timer = 0.0f;
+
+    public void Step(float dt)
+    {
+      timer -= dt;
+      if (timer < 0)
+      {
+        timer = Rate;
+        StepAction();
+        Count--;
+      }
+    }
+  }
+
+  private const int MaxActiveModifiers = 1;
+  private Modifier[] modifiers = new Modifier[MaxActiveModifiers];
 
   public struct InputState
   {
@@ -19,13 +63,13 @@ public class PlayerManager : MonoBehaviour
 
   public bool GetInput(out InputState input_state)
   {
-    // TODO: check for controller existence
-
-    input_state.h_move = Input.GetAxis(hMoveStr);
-    input_state.v_move = Input.GetAxis(vMoveStr);
-    input_state.h_look = Input.GetAxis(hLookStr);
-    input_state.v_look = Input.GetAxis(vLookStr);
-    input_state.fire = Input.GetAxis(fireStr) > Mathf.Epsilon;
+    Vector2 move = pad.leftStick.ReadValue();
+    input_state.h_move = move.x;
+    input_state.v_move = move.y;
+    Vector2 look = pad.rightStick.ReadValue();
+    input_state.h_look = look.x;
+    input_state.v_look = look.y;
+    input_state.fire = pad.rightTrigger.ReadValue() > Mathf.Epsilon;
 
     return true;
   }
@@ -40,62 +84,81 @@ public class PlayerManager : MonoBehaviour
   // TODO: just for tests!
   public int hp = 100;
   public bool dead = false;
-  public void Damage(int dmg)
+  public void Damage(int dmg, Modifier modifier = null)
   {
     if (dead) return;
 
+    if (modifier != null)
+    {
+      bool can_add = true;
+      for (int i = 0; i < modifiers.Length; i++)
+      {
+        if (modifiers[i] != null && modifiers[i].Type != modifier.Type)
+        {
+          can_add = false;
+          break;
+        }
+      }
+      if (can_add)
+      {
+        for (int i = 0; i < modifiers.Length; i++)
+        {
+          if (modifiers[i] == null)
+          {
+            modifiers[i] = modifier;
+          }
+        }
+      }
+    }
+
     hp -= dmg;
+
+    if (hp > 0.0f)
+    {
+      RumbleSystem.Instance.Play(playerId, dmg / 100.0f, 0.2f);
+      HUDSystem.Instance.DrawGluedBarIndicator(playerId, transform, transform.up * 1.0f, hp);
+    }
 
     CameraShaker.Instance.AddDuration(dmg * 0.02f);
 
     if (hp == 0)
-    {
-      // dead
+    { // dead
       dead = true;
-      //Destroy(gameObject, 1.0f);
 
       SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Death);
 
+      RumbleSystem.Instance.Play(playerId, 0.5f, 1.0f);
       gameObject.SetActive(false);
-      //GameStateManager.Instance.UpdatePlayers();
     }
     else
     if (hp < 0)
-    {
-      // ultra dead
+    { // ultra dead
       dead = true;
-      //Destroy(gameObject, 1.0f);
 
       SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Death);
 
+      RumbleSystem.Instance.Play(playerId, 0.7f, 1.0f);
       gameObject.SetActive(false);
-      //GameStateManager.Instance.UpdatePlayers();
     }
   }
 
   public float MoveSpeed = 1.0f;
 
   public int playerId;
-  private string hMoveStr;
-  private string vMoveStr;
-  private string hLookStr;
-  private string vLookStr;
-  private string fireStr;
-  private void Awake()
+  private Gamepad pad;
+  public void Init(bool is_active)
   {
-    playerId = ID++;
+    if (is_active)
+    {
+      playerId = ID++;
+      pad = Gamepad.all[playerId];
 
-    hMoveStr = string.Format("h_move_{0}", playerId);
-    vMoveStr = string.Format("v_move_{0}", playerId);
-    hLookStr = string.Format("h_look_{0}", playerId);
-    vLookStr = string.Format("v_look_{0}", playerId);
-    fireStr = string.Format("fire_{0}", playerId);
-  }
-
-  // public ThompsonGun thompson;
-  private void Start()
-  {
-    // GunSystem.GiveGun(thompson.gameObject);
+      gameObject.SetActive(true);
+    }
+    else
+    {
+      dead = true;
+    }
   }
 
   private bool isFliped = false;
@@ -119,6 +182,13 @@ public class PlayerManager : MonoBehaviour
       }
 
       GunSystem.Step(dt);  
+    }
+
+    for (int i = 0; i < modifiers.Length; i++)
+    {
+      if (modifiers[i] == null) continue;
+      modifiers[i].Step(dt);
+      if (modifiers[i].Count == 0) modifiers[i] = null;
     }
   }
 

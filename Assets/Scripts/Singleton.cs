@@ -6,7 +6,7 @@ public class Singleton<T> : UnityEngine.MonoBehaviour where T : Singleton<T>
 {
   public static T Instance = null;
 
-  void Awake()
+  protected virtual void Awake()
   {
     if (Instance != null)
     {

@@ -40,7 +40,11 @@ public class GameStateManager : Singleton<GameStateManager>
 
     SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Death);
 
-    // Debug.LogError("Game End!");
+    // TODO: kill all
+    for (int i = 0; i < players.Length; i++)
+    {
+      players[i].Damage(100);
+    }
   }
 
   public void OnlyOneLeft()
@@ -62,10 +66,23 @@ public class GameStateManager : Singleton<GameStateManager>
     SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Death);
   }
 
+  bool playground_mode = false;
+
+  public void SpawnPlayers(int paired_players)
+  {
+    playground_mode = paired_players < 2;
+    for (int i = 0; i < players.Length; i++)
+    {
+      bool isActive = i < paired_players;
+      players[i].Init(isActive);
+    }
+  }
+
   public void StartGame()
   {
     HUDSystem.Instance.StartTimer(60.0f, delegate {
     TimeOut(); });
+
     inGame = true;
   }
 
@@ -75,7 +92,7 @@ public class GameStateManager : Singleton<GameStateManager>
     SceneManager.sceneUnloaded += OnSceneUnloaded;
     SceneManager.sceneLoaded += OnSceneLoaded;
 
-    players = FindObjectsOfType<PlayerManager>();
+    UpdatePlayers();
   }
 
   public int GetFirstAliveID()
@@ -89,7 +106,7 @@ public class GameStateManager : Singleton<GameStateManager>
 
   public void UpdatePlayers()
   {
-    players = FindObjectsOfType<PlayerManager>(false);
+    players = FindObjectsOfType<PlayerManager>(true);
   }
 
   bool inGame = false;
@@ -108,7 +125,8 @@ public class GameStateManager : Singleton<GameStateManager>
       player.Step(dt);
       players_alive++;
     }
-    if (players_alive < 2)
+
+    if ((!playground_mode && players_alive < 2) || (playground_mode && players_alive < 1))
     {
       OnlyOneLeft();
     }

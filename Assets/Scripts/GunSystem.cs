@@ -14,6 +14,7 @@ public class GunSystem : MonoBehaviour
     gun.transform.SetParent(Holder.transform, false);
     gun.transform.localPosition = Vector3.zero;
     Holder.Weapon = gun.GetComponent<Gun>();
+    Holder.Weapon.onPick(Holder.Weapon.spawn_point);
     Destroy(gun.GetComponent<CircleCollider2D>());
     Holder.Weapon.SetOwner(gameObject);
   }
@@ -55,7 +56,6 @@ public class GunSystem : MonoBehaviour
       Holder.Weapon.Thrower = gameObject;
       Destroy(Holder.Weapon.gameObject, 1.0f);
       Holder.Weapon = null;
-      GunSpawner.Instance.FreeOne();
     }
   }
 }

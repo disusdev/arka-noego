@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace disusdev
 {
@@ -15,6 +16,8 @@ public abstract class Gun : MonoBehaviour
   protected bool fliped = false;
   protected float timer = 0.0f;
   public GameObject Thrower;
+  public int spawn_point;
+  public UnityAction<int> onPick;
 
   private void Awake()
   {

@@ -1,8 +1,9 @@
 
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace disusdev
 {
@@ -22,8 +23,6 @@ public class HUDSystem : Singleton<HUDSystem>
     public GameObject Object;
     public GameObject[] PanelsButtons;
     public GameObject[] PanelsApproved;
-    public string[] l_buttons;
-    public string[] r_buttons;
 
     public void Activate()
     {
@@ -47,18 +46,15 @@ public class HUDSystem : Singleton<HUDSystem>
           continue;
         }
 
-        if (Input.GetButton(l_buttons[i]) && Input.GetButton(r_buttons[i]))
+        if (i >= Gamepad.all.Count) break;
+
+        if (Gamepad.all[i].leftShoulder.isPressed &&
+            Gamepad.all[i].rightShoulder.isPressed)
         {
           SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Pinguin_1);
           PanelsButtons[i].SetActive(false);
           PanelsApproved[i].SetActive(true);
         }
-      }
-
-      if (Input.GetButtonDown("bypass"))
-      {
-        SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Point);
-        return 4;
       }
 
       return approved_count;
@@ -110,6 +106,87 @@ public class HUDSystem : Singleton<HUDSystem>
         OnTimerEnd.Invoke();
       }
       Text.text = timer.ToString("0");
+    }
+  }
+
+  [System.Serializable]
+  public struct BarIndicator
+  {
+    private Transform glued;
+    private Vector2 offset;
+
+    public RectTransform pos_trans;
+    public Slider slider;
+
+    public Image bg;
+    public Image hp;
+
+    public float hide_speed;
+
+    public void Play(Vector2 position, int value)
+    {
+      glued = null;
+      pos_trans.position = Camera.main.WorldToScreenPoint(position);
+
+      slider.value = value;
+
+      timer = 1.0f;
+
+      Color color = hp.color;
+      color.a = 1.0f;
+      hp.color = color;
+
+      color = bg.color;
+      color.a = 0.5f;
+      bg.color = color;
+    }
+
+    public void PlayGlued(Transform parrent, Vector2 offset, int value)
+    {
+      glued = parrent;
+      this.offset = offset;
+
+      pos_trans.position = Camera.main.WorldToScreenPoint((Vector2)glued.position + this.offset);
+      
+      slider.value = value;
+
+      timer = 1.0f;
+
+      Color color = hp.color;
+      color.a = 1.0f;
+      hp.color = color;
+
+      color = bg.color;
+      color.a = 0.5f;
+      bg.color = color;
+    }
+
+    private float timer;
+    public void Update(float dt)
+    {
+      timer -= dt * hide_speed;
+      if (timer < 0.0f)
+      {
+          timer = 0.0f;
+      }
+
+      Color color = hp.color;
+      color.a = timer;
+      hp.color = color;
+
+      color = bg.color;
+      color.a = timer - 0.5f;
+      bg.color = color;
+
+      if (glued != null)
+      {
+        this.offset += Vector2.up * dt;
+        pos_trans.position = Camera.main.WorldToScreenPoint((Vector2)glued.position + this.offset);
+      }
+      else
+      {
+        pos_trans.localPosition += Vector3.up * timer;
+      }
     }
   }
 
@@ -183,6 +260,7 @@ public class HUDSystem : Singleton<HUDSystem>
   }
 
   public TextIndicator[] Indicators;
+  public BarIndicator[] BarIndicators;
 
   public void DrawIndicator(Vector2 position, string value, Color color)
   {
@@ -206,6 +284,11 @@ public class HUDSystem : Singleton<HUDSystem>
         return;
       }
     }
+  }
+
+  public void DrawGluedBarIndicator(int index, Transform parrent, Vector2 offset, int value)
+  {
+    BarIndicators[index].PlayGlued(parrent, offset, value);
   }
 
   private Color TypeToColor(IndicatorType type)
@@ -272,13 +355,23 @@ public class HUDSystem : Singleton<HUDSystem>
       Indicators[i].Update(dt);
     }
 
+    for (int i = 0; i < BarIndicators.Length; i++)
+    {
+      BarIndicators[i].Update(dt);
+    }
+
     Timer.Step(dt);
 
-    if (Pair.Step() == 4)
+    int paired_players = Pair.Step();
+    bool bypass = Input.GetButtonDown("bypass");
+
+    if ((paired_players == 4) || bypass)
     {
-      SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Pinguin_2);
+      SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Point);
       Pair.Hide();
       PlayButton.SetActive(true);
+
+      GameStateManager.Instance.SpawnPlayers(paired_players);
     }
 
     if (Input.GetButtonDown("Submit") && PlayButton.activeSelf == true)
