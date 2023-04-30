@@ -363,9 +363,9 @@ public class HUDSystem : Singleton<HUDSystem>
     Timer.Step(dt);
 
     int paired_players = Pair.Step();
-    bool bypass = Input.GetButtonDown("bypass");
+    bool bypass = Gamepad.current.startButton.wasPressedThisFrame;// Input.GetButtonDown("bypass");
 
-    if ((paired_players == 4) || bypass)
+    if (((paired_players == 4) || bypass) && Pair.Object.activeSelf == true)
     {
       SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Click);
       Pair.Hide();
@@ -374,14 +374,16 @@ public class HUDSystem : Singleton<HUDSystem>
       GameStateManager.Instance.SpawnPlayers(paired_players);
     }
 
-    if (Input.GetButtonDown("Submit") && PlayButton.activeSelf == true)
+    bool submit = Gamepad.current.aButton.wasPressedThisFrame;
+
+    if (submit && PlayButton.activeSelf == true)
     {
       SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Click);
       PlayButton.SetActive(false);
       GameStateManager.Instance.StartGame();
     }
 
-    if (Input.GetButtonDown("Submit") && WinnerPanel.activeSelf == true)
+    if (submit && WinnerPanel.activeSelf == true)
     {
       SfxPlayer.Instance.PlaySfx(SfxPlayer.SfxType.Select);
       WinnerPanel.SetActive(false);

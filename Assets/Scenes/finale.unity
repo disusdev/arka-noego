@@ -1117,7 +1117,7 @@ MonoBehaviour:
   - gun: {fileID: 1060684648831009419, guid: 33ecc3086fce1f843a765f83ea9cca9a, type: 3}
     probability: 0.1
   - gun: {fileID: 8584931511634162545, guid: 958042ac24874e4408a3b2a8e96abdab, type: 3}
-    probability: 1
+    probability: 0.3
   MaxGunsInGame: 5
   InitialTimeToSpawn: 3
 --- !u!1 &791508322
