@@ -363,7 +363,15 @@ public class HUDSystem : Singleton<HUDSystem>
     Timer.Step(dt);
 
     int paired_players = Pair.Step();
-    bool bypass = Gamepad.current.startButton.wasPressedThisFrame;// Input.GetButtonDown("bypass");
+
+    bool bypass = false;
+    bool submit = false;
+
+    if (Gamepad.all.Count > 0)
+    {
+      bypass = Gamepad.current.startButton.wasPressedThisFrame;// Input.GetButtonDown("bypass");
+      submit = Gamepad.current.aButton.wasPressedThisFrame;
+    }
 
     if (((paired_players == 4) || bypass) && Pair.Object.activeSelf == true)
     {
@@ -372,9 +380,7 @@ public class HUDSystem : Singleton<HUDSystem>
       PlayButton.SetActive(true);
 
       GameStateManager.Instance.SpawnPlayers(paired_players);
-    }
-
-    bool submit = Gamepad.current.aButton.wasPressedThisFrame;
+    }    
 
     if (submit && PlayButton.activeSelf == true)
     {
