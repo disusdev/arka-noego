@@ -5,7 +5,7 @@
 			<value>Rocket_Shot</value>
 		</property>
 		<property name="outputFormat">
-			<value>0</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{823cab0f-dfef-4fcb-8729-cf54e2a62d02}</destination>
@@ -121,12 +121,16 @@
 	<object class="MixerBusEffectChain" id="{9fc82852-28e7-4783-8e33-e43e50a3ae9e}">
 		<relationship name="effects">
 			<destination>{e5aff657-6cf4-4a42-a5c2-65cfacf485ab}</destination>
+			<destination>{9c6b62be-4777-45f0-9eb2-ff3683613f4b}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{ead850f9-f084-43c3-a5dd-8404ff8c6979}" />
 	<object class="MultiSound" id="{da485980-9564-46b6-b77a-a9c6976089de}">
+		<property name="volume">
+			<value>3</value>
+		</property>
 		<property name="pitch">
-			<value>-2.4000001</value>
+			<value>-1.20000005</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{370fe66c-d1db-4525-9013-c41d3fff18de}</destination>
@@ -147,6 +151,14 @@
 	</object>
 	<object class="MixerBusPanner" id="{2326c334-ad84-4c9d-86ed-b8661cd00d30}" />
 	<object class="MixerBusFader" id="{e5aff657-6cf4-4a42-a5c2-65cfacf485ab}" />
+	<object class="ConvolutionReverbEffect" id="{9c6b62be-4777-45f0-9eb2-ff3683613f4b}">
+		<property name="wetLevel">
+			<value>-16.5</value>
+		</property>
+		<property name="dryLevel">
+			<value>10</value>
+		</property>
+	</object>
 	<object class="RandomizerModulator" id="{370fe66c-d1db-4525-9013-c41d3fff18de}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>pitch</value>
