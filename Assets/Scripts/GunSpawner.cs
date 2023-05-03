@@ -8,6 +8,15 @@ namespace disusdev
 
 public class GunSpawner : Singleton<GunSpawner>
 {
+  public enum SpawnedGunType
+  {
+    Pistol,
+    Auto,
+    Shotgun,
+    Rocket,
+    Fire
+  }
+
   [System.Serializable]
   public struct SpawnData
   {
@@ -116,6 +125,15 @@ public class GunSpawner : Singleton<GunSpawner>
   public float InitialTimeToSpawn = 1.0f;
 
   private float timer = 0.0f;
+
+  public void EnableRocketSpawnMode()
+  {
+    for (int i = 0; i < SpawnsData.Length; i++)
+    {
+      SpawnsData[i].probability = 0.0f;
+    }
+    SpawnsData[(int)SpawnedGunType.Rocket].probability = 1.0f;
+  }
 
   public void Step(float dt)
   {

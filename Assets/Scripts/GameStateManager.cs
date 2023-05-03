@@ -29,6 +29,11 @@ public class GameStateManager : Singleton<GameStateManager>
     SceneManager.LoadScene(build_index);
   }
 
+  public void RageMode()
+  {
+    GunSpawner.Instance.EnableRocketSpawnMode();  
+  }
+
   public void TimeOut()
   {
     // show game end UI,
@@ -81,8 +86,12 @@ public class GameStateManager : Singleton<GameStateManager>
 
   public void StartGame()
   {
-    HUDSystem.Instance.StartTimer(60.0f, delegate {
-    TimeOut(); });
+    HUDSystem.Instance.StartTimer(
+    60.0f, delegate {
+    TimeOut(); },
+    15.0f, delegate {
+    RageMode();
+    });
 
     inGame = true;
   }

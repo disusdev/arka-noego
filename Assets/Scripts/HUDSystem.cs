@@ -73,7 +73,11 @@ public class HUDSystem : Singleton<HUDSystem>
     public TMP_Text Text;
     private float timer;
 
+    private bool is_event_done;
+    public float EventTime;
+
     public UnityEvent OnTimerEnd;
+    public UnityEvent OnTimerEvent;
 
     private bool active;
 
@@ -83,6 +87,7 @@ public class HUDSystem : Singleton<HUDSystem>
       timer = time;
       Text.text = timer.ToString("0");
       active = true;
+      is_event_done = false;
     }
 
     public void Stop()
@@ -98,6 +103,13 @@ public class HUDSystem : Singleton<HUDSystem>
       if (!active) return;
 
       timer -= dt;
+
+      if (!is_event_done && timer < EventTime)
+      {
+          is_event_done = true;
+          OnTimerEvent.Invoke();
+      }
+
       if (timer < 0)
       {
         timer = 0.0f;
@@ -329,10 +341,14 @@ public class HUDSystem : Singleton<HUDSystem>
 
   public TextTimer Timer;
 
-  public void StartTimer(float time, UnityAction on_end)
+  public void StartTimer(float time, UnityAction on_end, float event_time, UnityAction on_event)
   {
     Timer.OnTimerEnd.RemoveAllListeners();
     Timer.OnTimerEnd.AddListener(on_end);
+    Timer.OnTimerEvent.RemoveAllListeners();
+    Timer.OnTimerEvent.AddListener(on_event);
+    Timer.EventTime = event_time;
+
     Timer.Start(time);
   }
 
